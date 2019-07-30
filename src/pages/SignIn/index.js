@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Mutation } from 'react-apollo';
-import { Spinner } from 'react-bootstrap';
-import { setCredentials } from '../../store';
+import { Icon } from 'antd';
+import { Creators as Actions } from '../../store/ducks/seller';
 import { parseEmail } from '../../utils';
 import { LOGIN_MUTATION } from '../../services/apolo/mutation';
 
 class SignIn extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { email: '', password: '', error: '' };
-  }
+  state = { email: '', password: '', error: '' };
 
-  handleSignIn = async data => {
-    const { token } = data.login;
-    await setCredentials(token);
-    this.props.history.push(`/`);
+  handleSignIn = ({
+    login: {
+      token,
+      seller: { name },
+    },
+  }) => {
+    const { setCredentials, history } = this.props;
+    setCredentials(token, name);
+    history.push(`/`);
   };
 
   handleError = async errors => {
@@ -61,7 +64,7 @@ class SignIn extends Component {
             if (loading && error) this.setState({ error: '' });
             return (
               <button onClick={() => this.validateForm(mutation)} disabled={loading}>
-                {!loading ? 'Entrar' : <Spinner animation="border" size="sm" />}
+                {!loading ? 'Entrar' : <Icon type="loading" style={{ fontSize: 24 }} spin />}
               </button>
             );
           }}
@@ -74,4 +77,11 @@ class SignIn extends Component {
   }
 }
 
-export default withRouter(SignIn);
+const mapDispatchToProps = {
+  setCredentials: Actions.setCredentials,
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(withRouter(SignIn));

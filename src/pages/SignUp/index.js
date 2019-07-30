@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Mutation } from 'react-apollo';
-import { Spinner } from 'react-bootstrap';
-import { setCredentials } from '../../store';
+import { Icon } from 'antd';
+import { Creators as Actions } from '../../store/ducks/seller';
 import { parseEmail } from '../../utils';
 import { SIGNUP_MUTATION } from '../../services/apolo/mutation';
 
 class SignUp extends Component {
   state = { email: '', password: '', name: '', error: '' };
 
-  handleSignUp = async data => {
-    const { token } = data.signUp;
-    await setCredentials(token);
-    this.props.history.push(`/`);
+  handleSignUp = async ({
+    signUp: {
+      token,
+      seller: { name },
+    },
+  }) => {
+    const { setCredentials, history } = this.props;
+    setCredentials(token, name);
+    history.push(`/`);
   };
 
   handleError = async errors => {
@@ -65,7 +71,7 @@ class SignUp extends Component {
             if (loading && error !== '') this.setState({ error: '' });
             return (
               <button onClick={() => this.validateForm(mutation)} disabled={loading}>
-                {!loading ? 'Criar conta' : <Spinner animation="border" size="sm" />}
+                {!loading ? 'Criar conta' : <Icon type="loading" style={{ fontSize: 24 }} spin />}
               </button>
             );
           }}
@@ -78,4 +84,11 @@ class SignUp extends Component {
   }
 }
 
-export default withRouter(SignUp);
+const mapDispatchToProps = {
+  setCredentials: Actions.setCredentials,
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(withRouter(SignUp));

@@ -3,16 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "antd": "^3.20.7",
     "apollo-boost": "^0.4.3",
     "apollo-link-context": "^1.0.18",
     "bootstrap": "^4.3.1",
     "graphql": "^14.4.2",
     "react": "^16.8.6",
     "react-apollo": "^2.5.8",
-    "react-bootstrap": "^1.0.0-beta.10",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "redux": "^4.0.4",
+    "redux-persist": "^5.10.0",
+    "redux-thunk": "^2.3.0",
+    "reduxsauce": "^1.1.0",
     "styled-components": "^4.3.2"
   },
   "scripts": {
@@ -48,6 +53,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "husky": "^3.0.1",
     "lint-staged": "^9.2.1",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "remote-redux-devtools": "^0.5.16"
   }
 }
